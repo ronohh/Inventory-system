@@ -2,7 +2,7 @@ import {useEffect} from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-const ProtectedRoute = ({children, requiredRole}) => {
+const ProtectedRoutes = ({children, requiredRole}) => {
     const {user} = useAuth();
     const navigate = useNavigate();
 
@@ -23,4 +23,4 @@ const ProtectedRoute = ({children, requiredRole}) => {
     return children;
 }
 
-export default ProtectedRoute;
+export default ProtectedRoutes;

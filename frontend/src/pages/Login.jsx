@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
 
@@ -17,15 +18,15 @@ const Login = () => {
         setLoading(true);
         setError(null);
         try {
-            const response = await axios.post("http://localhost:5000/api/auth/login", {
-                email,password
-            });
+            const response = await axios.post("http://localhost:3000/api/auth/login", {
+                email,password });
+
             if (response.data.success) {
                 await login(response.data.user, response.data.token);
                 if(response.data.user.role === "admin") {
-                    navigate("/admin/dashboard");
+                    navigate('/admin-dashboard');
                 }else {
-                    navigate("/customer/dasboard");
+                    navigate('/customer/dashboard');
                 }
             }else{
                 alert(response.data.error);
@@ -44,7 +45,12 @@ const Login = () => {
             <h2 className="text-3xl text-white">Inventory Management System</h2>
             <div className=" border shadow-lg p-6 w-80 bg-white">
                 <h2 className="text-2xl font-bold mb-4">Login</h2>
-                <form onsubmit={handleSubmit}>
+                {error && (
+                    <div className=" bg-red-200 text-red-800 p-2 rounded mb-4">
+                        {error}
+                    </div>
+                )}
+                <form onSubmit={handleSubmit}>
                     <div className="mb-4">
                         <label className="block text-gray-700">Email</label>
                         <input 
