@@ -10,8 +10,7 @@ const Categories = () => {
     const [categories, setCategories] = useState([]);
     const [editCategory, setEditCategory] = useState(null);
 
-    useEffect(() => {
-        const fetchCategories = async () => {
+    const fetchCategories = async () => {
             try {
                 const response = await axios.get("http://localhost:3000/api/category/", {
                     headers: {
@@ -26,6 +25,8 @@ const Categories = () => {
                 
             }
         };
+    useEffect(() => {
+        
         fetchCategories();
     }, []);
 
