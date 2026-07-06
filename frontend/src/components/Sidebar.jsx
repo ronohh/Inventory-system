@@ -1,5 +1,5 @@
 import react from 'react';
-import { FaHome, FaTable } from 'react-icons/fa';
+import { FaHome, FaTable, FaCog, FaSignOutAlt } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
 
 const Sidebar = () => {
@@ -8,8 +8,10 @@ const Sidebar = () => {
         { name: "Dashboard", path: "/admin-dashboard", icon : <FaHome /> },
         { name: "Categories", path: "/admin-dashboard/categories", icon: <FaTable/>},
         { name: "Supplier", path: "/admin-dashboard/suppliers", icon: <FaTable/>},
-        { name: "Products", path: "/admin-dashboard/products", icon: <FaTable/>}
-    ]
+        { name: "Products", path: "/admin-dashboard/products", icon: <FaTable/>},
+        { name: "profile", path: "/admin-dashboard/profile", icon: <FaCog />, isParent: false, },
+        { name: "LogOut", path: "/admin-dashboard/logout", icon: <FaSignOutAlt/>, isParent:false},
+    ];
     return (
         <div className= "flex flex-col h-screen bg-black text-white w-16 md:w-64 fixed">
             <div className= "h-16 flex flex-items justify-center">

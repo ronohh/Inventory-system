@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard'
 import Categories from './components/Categories'
 import Suppliers from './components/Supplier'
 import Product from './components/Product'
+import Logout from './components/Logout'
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
             <Route path= "categories" element={<Categories/>}/>
             <Route path="suppliers" element={<Suppliers/>} />
             <Route path="products" element={<Product/>}></Route>
+            <Route path= "logout" element={<Logout />} />
 
           </Route>
 
