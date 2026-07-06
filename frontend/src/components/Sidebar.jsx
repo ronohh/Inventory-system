@@ -7,7 +7,8 @@ const Sidebar = () => {
     const menuItems = [
         { name: "Dashboard", path: "/admin-dashboard", icon : <FaHome /> },
         { name: "Categories", path: "/admin-dashboard/categories", icon: <FaTable/>},
-        { name: "Supplier", path: "/admin-dashboard/suppliers", icon: <FaTable/>}
+        { name: "Supplier", path: "/admin-dashboard/suppliers", icon: <FaTable/>},
+        { name: "Products", path: "/admin-dashboard/products", icon: <FaTable/>}
     ]
     return (
         <div className= "flex flex-col h-screen bg-black text-white w-16 md:w-64 fixed">
