@@ -7,6 +7,7 @@ const Product = () => {
     const [openModal, setOpenModal] = useState(false);
     const [categories, setCategories] = useState([]);
     const [suppliers, setSuppliers] = useState([]);
+    const [products, setProducts] = useState([]);
     const [formData, setFormData] = useState({
         name: "",
         description: "",
@@ -23,8 +24,15 @@ const Product = () => {
                     Authorization: 'Bearer ${localStorage.getItem("pos-token")}',
                 },
             });
-            setCategories(response.data.categories);
-            setSuppliers(response.data.suppliers);
+            if(response.data.success){
+                setCategories(response.data.categories);
+                setSuppliers(response.data.suppliers);
+                setProducts(response.data.products)
+            }else{
+                console.error("Error fetching products", error.message);
+                alert("error fetching products")
+            }
+            
         }catch(error){
             console.log("error fetching products", error);
         }
@@ -55,22 +63,22 @@ const Product = () => {
                 }
             );
             if (response.data.success) {
-                // fetchSuppliers();
+                fetchProducts();
                 alert("product added successfully");
-                openModal(false);
+                setOpenModal(false);
                 setFormData ({
                     name: "",
                     description: "",
                     price: "",
                     stock: "",
-                    categorizedId: "",
+                    categoryId: "",
                     supplierId: "",
                 });
             }else {
                 alert("Error adding product.please try again");
             }
-        } catch (error) {
-            alert("Error adding product.please try again")
+        }catch (error) {
+            alert("server error adding product.please try adding product again")
         }
     };
 
@@ -79,11 +87,52 @@ const Product = () => {
             
             <h1 className="text-2xl font-bold">Product Management</h1>
             <div className=" flex justify-between items-center">
+                
                 <input type="text" placeholder="search" className="border p-1 bg-white rounded px-4"></input>
     
 
-                <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 " onClick={() =>setOpenModal(true)}>Add PRODUCT</button>
+                <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 " onClick={() =>setOpenModal(true)}>Add PRODUCT</button>   
 
+            </div>
+
+            <div>
+                <table className="w-full border-collapse border border-gray-300 mt-4">
+                    <thead>
+                        <tr className="bg-gray-200">
+                            <th className="border border-gray-300 p-2">S NO</th>
+                            <th className="border border-gray-300 p-2">Product Name</th>
+                            <th className="border border-gray-300 p-2">Category Name</th>
+                            <th className="border border-gray-300 p-2">Supplier Name</th>
+                            <th className="border border-gray-300 p-2">Price</th>
+                            <th className="border border-gray-300 p-2">Stock</th>
+                            <th className="border border-gray-300 p-2"> Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {products.map((product,index) => (
+                            <tr key={product._id}>
+                                <td className="border border-gray-300 p-2">{index + 1}</td>
+                                <td className="border border-gray-300 p-2">{product.name}</td>
+                                <td className="border border-gray-300 p-2">{product.categoryId.categoryName}</td>
+                                <td className="border border-gray-300 p-2">{product.supplierId.name}</td>
+                                <td className="border border-gray-300 p-2">{product.price}</td>
+                                <td className="border border-gray-300 p-2">
+                                    <span>
+                                        {product.stock == 0 ? (
+                                           <span className="bg-red-100 text-red-500">{product.stock}</span>
+                                        ):
+                                            <span className="bg-green-100 text-green-500">{product.stock}</span>
+                                        }
+                                    </span>
+                                </td>
+                                <td className="border border-gray-300 p-2">
+                                    <button className="px-2 py-1 bg-yellow-500 text-white rounded mr-2" >Edit</button>
+                                    <button className="px-2 py-1 bg-red-500 text-white rounded" >Delete</button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
 
             { openModal && (
@@ -97,7 +146,7 @@ const Product = () => {
                             <input type="number" name="price" placeholder="product Price" value={formData.price} onChange={handleChange} className="border p-1 bg-white  rouded px-4"/>
                             <input type="number" name="stock" placeholder="product Stock"  value={formData.stock} onChange={handleChange} className="border p-1 bg-white  rouded px-4"/>
                             <div className="w-full border">
-                                <select name="category" className="w-full p-2" onChange={handleChange} value={formData.categoryId}>
+                                <select name="categoryId" onChange={handleChange} value={formData.categoryId} className="w-full p-2">
                                     <option value=""> Select Category</option>
                                     {categories && categories.map((category) => (
                                         <option key={category._id} value={category._id}>
@@ -107,7 +156,7 @@ const Product = () => {
                                 </select>
                             </div>
                             <div className="w-full border">
-                            <select name="supplier" className="w-full p-2" onChange={handleChange} value={formData.supplierId}>
+                            <select name="supplierId" onChange={handleChange} value={formData.supplierId} className="w-full p-2">
                                     <option value=""> Select Supplier</option>
                                     {suppliers && suppliers.map((supplier) => (
                                         <option key={supplier._id} value={supplier._id}>
