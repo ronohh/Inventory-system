@@ -64,6 +64,34 @@ const Product = () => {
         });
     }
 
+    const handleDelete = async (id) => {
+        const confirmDelete = window.confirm(
+            "Are you sure  you want to delete this product?"
+        );
+        if (confirmDelete) {
+            try{
+            const response = await axios.delete(
+                `http://localhost:3000/api/product/${id}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("pos-token")}`,
+                    },
+                }
+            );
+                if (response.data.success) {
+                    alert("Supplier deleted succesfully!");
+                    fetchProducts();
+                }else {
+                    console.error("Error deleting Supplier", data);
+                    alert("Error deleting Supplier. Please try again.");
+                } 
+            }catch (error){
+                    console.error(" error deleting product", data);
+                    alert(" Error deleting Product.try again")
+                }
+        }
+    }
+
     const closeModel = () => {
         setOpenModal(false);
         setEditProduct(null);
@@ -186,7 +214,7 @@ const Product = () => {
                                 </td>
                                 <td className="border border-gray-300 p-2 px-2">
                                     <button className="px-2 py-1 bg-yellow-500 text-white rounded mr-2" onClick={ () => handleEdit(product)} >Edit</button>
-                                    <button className="px-2 py-1 bg-red-500 text-white rounded" >Delete</button>
+                                    <button className="px-2 py-1 bg-red-500 text-white rounded" onClick={() => handleDelete(product._id)}>Delete</button>
                                 </td>
                             </tr>
                         ))}
@@ -203,7 +231,7 @@ const Product = () => {
                             <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="product Name" className="border p-1 bg-white  rouded px-4"/>
                             <input type="text" name="description" value={formData.description} onChange={handleChange} placeholder="product Description" className="border p-1 bg-white  rouded px-4"/>
                             <input type="number" name="price" placeholder="product Price" value={formData.price} onChange={handleChange} className="border p-1 bg-white  rouded px-4"/>
-                            <input type="number" name="stock" placeholder="product Stock"  value={formData.stock} onChange={handleChange} className="border p-1 bg-white  rouded px-4"/>
+                            <input type="number" name="stock" min="0" placeholder="product Stock"  value={formData.stock} onChange={handleChange} className="border p-1 bg-white  rouded px-4"/>
                             <div className="w-full border">
                                 <select name="categoryId" onChange={handleChange} value={formData.categoryId} className="w-full p-2">
                                     <option value=""> Select Category</option>

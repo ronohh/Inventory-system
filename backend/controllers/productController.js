@@ -23,7 +23,7 @@ const addProduct = async (req, res) => {
 
 const getProducts = async (req,res) => {
     try{
-        const products = await Product.find().populate('categoryId').populate('supplierId');
+        const products = await Product.find({isDeleted: false}).populate('categoryId').populate('supplierId');
         const suppliers =await Supplier.find();
         const categories = await Category.find();
         return res.status(200).json({success: true, products, suppliers, categories});
@@ -56,4 +56,23 @@ const updateProduct = async (req, res) => {
 }
 }
 
-export { getProducts,addProduct , updateProduct };
+const deleteProduct = async (req, res) => {
+    try{
+        const {id} = req.params;
+        const existingProduct = await Product.findById(id);
+
+        if (!existingProduct) {
+            return res.status(404).json({ success: false, message: 'product not found'});
+        }
+        if (existingProduct.isDelete){
+            return res.status(400).json({ success: true, message: 'product already deleted'});
+        }
+        await Product.findByIdAndDelete(id, {isDeleted: true}, {new: true});
+        return res.status(200).json({ success: true, message: 'product deleted successfully'});
+    } catch (error) {
+        console.error('Error deleting Product', error);
+        return res.status(500).json({ success: false, message: 'server error'})
+    }
+}
+
+export { getProducts,addProduct , updateProduct, deleteProduct  };
