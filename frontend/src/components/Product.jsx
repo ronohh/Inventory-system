@@ -9,6 +9,7 @@ const Product = () => {
     const [categories, setCategories] = useState([]);
     const [suppliers, setSuppliers] = useState([]);
     const [products, setProducts] = useState([]);
+    const [filteredProducts, setFilteredProducts] = useState([]);
     const [formData, setFormData] = useState({
         name: "",
         description: "",
@@ -29,6 +30,7 @@ const Product = () => {
                 setCategories(response.data.categories);
                 setSuppliers(response.data.suppliers);
                 setProducts(response.data.products)
+                setFilteredProducts(response.data.products)
             }else{
                 console.error("Error fetching products", error.message);
                 alert("error fetching products")
@@ -169,13 +171,20 @@ const Product = () => {
     }
     };
 
+    const handleSearch = (e) => {
+        setFilteredProducts(
+            products.filter((product) =>
+            product.name.toLowerCase().includes(e.target.value.toLowerCase()))
+        )
+    }
+
     return(
         <div className= "w-full h-full flex flex-col gap-4 p-4">
             
             <h1 className="text-2xl font-bold">Product Management</h1>
             <div className=" flex justify-between items-center">
                 
-                <input type="text" placeholder="search" className="border p-1 bg-white rounded px-4"></input>
+                <input type="text" placeholder="search" className="border p-1 bg-white rounded px-4" onClick={handleSearch}></input>
     
 
                 <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 " onClick={() =>setOpenModal(true)}>Add PRODUCT</button>   
@@ -196,7 +205,7 @@ const Product = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {products.map((product,index) => (
+                        {filteredProducts && filteredProducts.map((product,index) => (
                             <tr key={product._id}>
                                 <td className="border border-gray-300 p-2">{index + 1}</td>
                                 <td className="border border-gray-300 p-2">{product.name}</td>
@@ -220,6 +229,7 @@ const Product = () => {
                         ))}
                     </tbody>
                 </table>
+                {filteredProducts.length === 0 && <div>No records</div> }
             </div>
 
             { openModal && (
