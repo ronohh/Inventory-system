@@ -33,4 +33,27 @@ const getProducts = async (req,res) => {
     }
 }
 
-export { getProducts,addProduct };
+const updateProduct = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const{name,description, price, stock, categoryId, supplierId} = req.body;
+    const updatedProduct = await Product.findByIdAndUpdate(id, {
+        name,
+        description,
+        price,
+        stock,
+        categoryId,
+        supplierId,
+    }, {new: true});
+
+    if (!updatedProduct) {
+        return res.status(404).json({ success: false, message: 'product not found'});
+    }
+    return res.status(200).json({ success: true, message: 'Product updated successfully', product: updateProduct})
+} catch (error) {
+    console.error('error updating product', error.message);
+    return res.status(500).json({success: false, message: 'server error'});
+}
+}
+
+export { getProducts,addProduct , updateProduct };
