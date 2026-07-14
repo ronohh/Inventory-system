@@ -11,6 +11,7 @@ const Suppliers = () => {
     const [formData, setFormData] = useState({name: "", email: "", phone: "", location: ""});
     const [ loading, setLoading] = useState(false);
     const [suppliers, setSuppliers] = useState([]);
+    const [filteredSuppliers, setFilteredSuppliers] = useState([]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -30,7 +31,7 @@ const Suppliers = () => {
             });
             console.log(response.data.suppliers);
             setSuppliers(response.data.suppliers);
-            
+            setFilteredSuppliers(response.data.suppliers)
         }catch(error) {
             console.error("Error fetching suppliers:", error);
             setLoading(false)
@@ -153,15 +154,22 @@ const Suppliers = () => {
             }
         }
     }
+    const handleSearch = (e) => {
+        setFilteredSuppliers(
+            suppliers.filter((supplier) =>
+                supplier.name.toLowerCase().includes(e.target.value.toLowerCase())
+            )
+        )
+    }
     return (
         <div className="w-full h-full flex-col gap-4 p-4">
             <h1 className="text-2xl font-bold p-4">Supplier Management</h1>
             <div className="flex justify-between items-center">    
-                <input text="text" placeholder="search" className='border p-1 bg-white rounded px-4'/>
+                <input text="text" placeholder="search" className="border p-1 bg-white rounded px-4" onChange={handleSearch}/>
                 <button className=" py-1.5 bg-blue-500 text-white px-4 rounded" onClick={() => setAddModal(true)}>Add Supplier</button>
             </div>
 
-            
+            <div>
                 <table className="w-full border-collapse border border-gray-300 mt-4">
                     <thead>
                         <tr className="bg-gray-200">
@@ -173,7 +181,7 @@ const Suppliers = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {suppliers.map((supplier) => (
+                        {filteredSuppliers.map((supplier) => (
                             <tr key={supplier._id}>
                                 <td className="border border-gray-300 p-2">{supplier.name}</td>
                                 <td className="border border-gray-300 p-2">{supplier.email}</td>
@@ -189,7 +197,8 @@ const Suppliers = () => {
                         }
                     </tbody>
                 </table>
-            
+                {filteredSuppliers.length === 0 && <div> No records </div>}
+            </div>
 
             {addModal && (
                 <div className="fixed top-0 left-0 w-full h-full bg-black/50 flex justify-center items-center">

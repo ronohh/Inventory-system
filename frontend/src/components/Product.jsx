@@ -184,7 +184,7 @@ const Product = () => {
             <h1 className="text-2xl font-bold">Product Management</h1>
             <div className=" flex justify-between items-center">
                 
-                <input type="text" placeholder="search" className="border p-1 bg-white rounded px-4" onClick={handleSearch}></input>
+                <input type="text" placeholder="search" className="border p-1 bg-white rounded px-4" onChange={handleSearch}></input>
     
 
                 <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 " onClick={() =>setOpenModal(true)}>Add PRODUCT</button>   
