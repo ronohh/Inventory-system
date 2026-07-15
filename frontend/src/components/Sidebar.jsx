@@ -1,5 +1,5 @@
 import react from 'react';
-import { FaHome, FaTable, FaCog, FaSignOutAlt } from 'react-icons/fa';
+import { FaHome, FaTable,FaTruck,FaBox, FaCog, FaSignOutAlt } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
 
 const Sidebar = () => {
@@ -7,8 +7,8 @@ const Sidebar = () => {
     const menuItems = [
         { name: "Dashboard", path: "/admin-dashboard", icon : <FaHome /> },
         { name: "Categories", path: "/admin-dashboard/categories", icon: <FaTable/>},
-        { name: "Supplier", path: "/admin-dashboard/suppliers", icon: <FaTable/>},
-        { name: "Products", path: "/admin-dashboard/products", icon: <FaTable/>},
+        { name: "Supplier", path: "/admin-dashboard/suppliers", icon: <FaTruck/>},
+        { name: "Products", path: "/admin-dashboard/products", icon: <FaBox/>},
         { name: "profile", path: "/admin-dashboard/profile", icon: <FaCog />, isParent: false, },
         { name: "LogOut", path: "/admin-dashboard/logout", icon: <FaSignOutAlt/>, isParent:false},
     ];
