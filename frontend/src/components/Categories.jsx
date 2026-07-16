@@ -14,7 +14,7 @@ const Categories = () => {
             try {
                 const response = await axios.get("http://localhost:3000/api/category/", {
                     headers: {
-                        Authorization: 'Bearer ${localStorage.getItem("pos-token")}',
+                        Authorization: `Bearer ${localStorage.getItem("pos-token")}`,
                     },
                 });
                 console.log(response.data.categories);
@@ -22,7 +22,8 @@ const Categories = () => {
                 
             }catch (error) {
                 console.error('Error fetching categories:', error);
-                
+                console.error(error.response?.data);
+                console.error(error.message)
             }
         };
     useEffect(() => {
@@ -135,7 +136,7 @@ const Categories = () => {
                 </div>
                 </div>
                 <div className="lg:w-2/3">
-                    <table className="w-full borde-collapse border border-gray-200">
+                    <table className="w-full border-collapse border border-gray-200">
                         <thead >
                             <tr>
                                 <th className="border border-gray-200 p-2">S No</th>
