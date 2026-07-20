@@ -18,4 +18,14 @@ const addUser = async (req, res) => {
     }
 }
 
-export {addUser}
+const getUsers = async (req, res) => {
+    try{
+        const users = await User.find();
+        return res.status(201).json({ success: true, message : "users fetched", users})
+    }catch(error){
+        console.error("users not fetched server eroor", error)
+        return res.status(500).json({success: false, message: "server error getting users"})
+    }
+}
+
+export {addUser, getUsers}

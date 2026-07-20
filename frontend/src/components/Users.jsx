@@ -1,5 +1,5 @@
 import React from "react"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 const Users = () => {
@@ -11,6 +11,26 @@ const Users = () => {
         phonenumber: "",
         role: "",
     });
+    const [users, setUsers] = useState([]);
+
+    const fetchUsers = async () =>{
+        try{
+            const response = await axios.get("http://localhost:3000/api/user/", {
+                headers: {
+                        Authorization: `Bearer ${localStorage.getItem("pos-token")}`,
+                    },
+            });
+            console.log(response.data.users);
+            setUsers(response.data.users); 
+        }catch (error) {
+                console.error('Error fetching users:', error);
+                console.error(error.response?.data);
+                console.error(error.message)
+            }
+    };
+    useEffect(() => {
+        fetchUsers();
+    },[]);
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -24,7 +44,7 @@ const Users = () => {
                 }
             );
             if(response.data.success){
-                alert("user added sucessfully")
+                alert("user added sucessfully");
                 setFormData({
                     name: "",
                     email: "",
@@ -32,6 +52,7 @@ const Users = () => {
                     phonenumber: "",
                     role: "",
                 });
+                fetchUsers();
             }
             else{
                 console.error( "error adding new user", response.data);
@@ -82,18 +103,26 @@ const Users = () => {
                     <table className="w-full border-collapse border border-gray-200">
                         <thead>
                             <tr>
-                                <td className="border border-gray-200 p-2">S:No</td>
-                                <td className="border border-gray-200 p-2">Name</td>
-                                <td className="border border-gray-200 p-2">Position</td>
+                                <th className="border border-gray-200 p-2">S.No</th>
+                                <th className="border border-gray-200 p-2">Name</th>
+                                <th className="border border-gray-200 p-2">Email</th>
+                                <th className="border border-gray-200 p-2">Phone</th>
+                                <th className="border border-gray-200 p-2">Role</th>
+                                <th className="border border-gray-200 p-2">Action</th>
                             </tr>
             
                         </thead>
                         <tbody>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+                            {users.map((user, index) => (
+                                <tr key= {index}>
+                                    <td className="border border-gray-200 p-2" > {index + 1}</td>
+                                    <td className="border border-gray-200 p-2">{user.name}</td>
+                                    <td className="border border-gray-200 p-2">{user.email}</td>
+                                    <td className="border border-gray-200 p-2">{user.phonenumber}</td>
+                                    <td className="border border-gray-200 p-2">{user.role}</td>
+                                    <td></td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>
