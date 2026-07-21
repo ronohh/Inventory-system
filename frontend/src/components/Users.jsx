@@ -70,6 +70,30 @@ const Users = () => {
             [name] : value,
         }));
     } 
+
+    const handleDelete = async (id) => {
+        const confirmDelete = window.confirm("Do you want to delete this User");
+        if (confirmDelete) {
+            try {
+                const response = await axios.delete(`http://localhost:3000/api/user/${id}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem("pos-token")}`
+                        }
+                    }
+                );
+                if(response.data.success){
+                    alert("user Deleted successfully")
+                    fetchUsers();
+                }else {
+                    console.error("error deleting user:", data);
+                    alert("error deleting user. please try again")
+                }
+            }catch(error){
+                console.error("error deleting user", error)
+            }
+        }
+    }
     return(
         <div className="p-4">
             <h1 className="font-bold text-2xl mb-8">Company employes</h1>
@@ -91,10 +115,14 @@ const Users = () => {
                                 <input type="number" name="phonenumber" value={ formData.phonenumber} onChange={handleChange} placeholder="Phone Number" className="border w-full rounded-md p-2" />
                                 </div>
                                 <div>
-                                <input type="text" name="role" value={ formData.role} onChange={handleChange} placeholder="role" className="border w-full rounded-md p-2" />
+                                    <select name="role" value={formData.role} onChange={handleChange} className="border w-full rounded-md p-2">
+                                        <option value="">Select Role</option>
+                                        <option value="admin">Admin</option>
+                                        <option value="customer">Customer</option>
+                                    </select>
                                 </div>
                                 <div>
-                                    <button type="Submit" className="w-full rounded-md  bg-green-500 text-white p-3 ">Add User</button>
+                                    <button type="Submit" className="w-full rounded-md  bg-green-500 text-white p-3 " >Add User</button>
                                 </div>
                             </form>
                     </div>
@@ -120,7 +148,9 @@ const Users = () => {
                                     <td className="border border-gray-200 p-2">{user.email}</td>
                                     <td className="border border-gray-200 p-2">{user.phonenumber}</td>
                                     <td className="border border-gray-200 p-2">{user.role}</td>
-                                    <td></td>
+                                    <td className="border border-gray-200 p-2">
+                                        <button className="bg-red-500 rounded p-2 text-white" onClick={() => handleDelete(user._id)}>Delete</button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>

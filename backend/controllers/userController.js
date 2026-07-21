@@ -3,6 +3,7 @@ import User from "../models/User.js";
 const addUser = async (req, res) => {
     try{
         const {name, email, password, phonenumber, role}= req.body;
+        
         const newUser = new User ({
             name,
             email,
@@ -28,4 +29,19 @@ const getUsers = async (req, res) => {
     }
 }
 
-export {addUser, getUsers}
+const deleteUser = async (req, res) => {
+    try {
+        const {id} =  req.params;
+        const existingUser = await User.findById(id);
+        if(!existingUser) {
+            return res.status(404).json({ success: false, message: 'User not found'});
+        }
+        await User.findByIdAndDelete(id);
+            return res.status(200).json({ success: true, message: 'User deleted successfully'});
+    }catch (error) {
+        console.error('error deleting User', error);
+        return res.status(500).json({success: false, message: 'server error'});
+    }
+}
+
+export {addUser, getUsers, deleteUser}

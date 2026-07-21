@@ -84,15 +84,15 @@ const Categories = () => {
         setCategoryName("");
         setCategoryDescription("");
     };
-    const handleDelete = async () =>{
+    const handleDelete = async (id) =>{
         const confirmDelete = window.confirm("Are you sure you want to delete this category")
         if (confirmDelete){
             try{
                 const response = await axios.delete(
-                    'http://localhost:3000/api/category/${id}',
+                    `http://localhost:3000/api/category/${id}`,
                     {
                         headers: {
-                            Authorization: 'Bearer ${localStorage.getItem("pos-token")}',
+                            Authorization: `Bearer ${localStorage.getItem("pos-token")}`,
                         },
                     }
                 );
@@ -100,11 +100,11 @@ const Categories = () => {
                     alert("category deleted sucessfully");
                     fetchCategories();
                 }else {
-                    console.error("error deleting category:", data);
+                    console.error("error deleting category:");
                     alert("error deleting category. please try again")
                 }
             }catch (error) {
-                console.error("Error deleting category:", data)
+                console.error("Error deleting category:")
                 alert("error deleting category. please try again");
             }
         }
