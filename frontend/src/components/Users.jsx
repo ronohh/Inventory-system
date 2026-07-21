@@ -12,6 +12,7 @@ const Users = () => {
         role: "",
     });
     const [users, setUsers] = useState([]);
+    const [filteredUser, setfilteredUser] = useState([]);
 
     const fetchUsers = async () =>{
         try{
@@ -22,6 +23,7 @@ const Users = () => {
             });
             console.log(response.data.users);
             setUsers(response.data.users); 
+            setfilteredUser(response.data.users)
         }catch (error) {
                 console.error('Error fetching users:', error);
                 console.error(error.response?.data);
@@ -94,6 +96,13 @@ const Users = () => {
             }
         }
     }
+
+    const handleSearch = (e) => {
+        setfilteredUser(
+            users.filter((user) => 
+                user.name.toLowerCase().includes(e.target.value.toLowerCase()))
+        )
+    }
     return(
         <div className="p-4">
             <h1 className="font-bold text-2xl mb-8">Company employes</h1>
@@ -128,7 +137,10 @@ const Users = () => {
                     </div>
                 </div>
                 <div className="lg:w-2/3">
-                    <table className="w-full border-collapse border border-gray-200">
+                <div>
+                    <input type="text" placeholder= "Search" className=" p-2 bg-white rounded text-black w-full mb-8" onChange={handleSearch} />
+                </div>
+                    <table className="w-full bg-white border-collapse border border-gray-200">
                         <thead>
                             <tr>
                                 <th className="border border-gray-200 p-2">S.No</th>
@@ -141,7 +153,7 @@ const Users = () => {
             
                         </thead>
                         <tbody>
-                            {users.map((user, index) => (
+                            {filteredUser && filteredUser.map((user, index) => (
                                 <tr key= {index}>
                                     <td className="border border-gray-200 p-2" > {index + 1}</td>
                                     <td className="border border-gray-200 p-2">{user.name}</td>
@@ -155,6 +167,7 @@ const Users = () => {
                             ))}
                         </tbody>
                     </table>
+                    {filteredUser.length === 0 && <div> No records </div>}
                 </div>
             </div>
         </div>
