@@ -1,6 +1,7 @@
-import react from 'react';
-import { FaHome, FaTable,FaTruck,FaBox, FaUsers, FaCog, FaSignOutAlt } from 'react-icons/fa';
+import react, { useEffect, useState } from 'react';
+import { FaHome, FaTable,FaTruck,FaBox, FaUsers, FaCog, FaSignOutAlt, FaShoppingCart } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
+import { useAuth} from "../context/AuthContext"
 
 const Sidebar = () => {
 
@@ -13,6 +14,21 @@ const Sidebar = () => {
         { name: "profile", path: "/admin-dashboard/profile", icon: <FaCog />, isParent: false, },
         { name: "LogOut", path: "/admin-dashboard/logout", icon: <FaSignOutAlt/>, isParent:false},
     ];
+
+    const customerItems =[
+        {name: "products", path : "/customer-dashboard/products", icon: <FaBox/>, isParent:false,},
+        {name: "Orders", path: "/customer-dashboard/orders", icon: <FaShoppingCart/>, isParent: false,},
+        {name: "Profile", path: "/customer-dashboard/profile", icon: <FaCog/>, isParent: false, },
+        {name: "LogOut", path: "/admin-dashboard/logout", icon: <FaSignOutAlt />, isParent: false },
+    ];
+
+    const {user} = useAuth();
+    const[menuLinks, setMenuLinks] = useState(customerItems);
+   useEffect(()=>{
+    if(user && user.role === "customer") {
+        setMenuLinks(customerItems)
+    }
+   }, [])
     return (
         <div className= "flex flex-col h-screen bg-black text-white w-16 md:w-64 fixed">
             <div className= "h-16 flex flex-items justify-center">
@@ -23,7 +39,7 @@ const Sidebar = () => {
             <div>
                 <ul className='space-y-2 p-2'>
                     {
-                        menuItems.map((item) => (
+                        menuLinks.map((item) => (
                             <li key={item.name} >
                                 <NavLink className={({isActive}) => isActive ? "flex items-center p-2 text-white bg-gray-700 rounded" : "flex items-center p-2 text-white hover:bg-gray-700 rounded"} to={item.path}>
                                     <span className="text-xl">{item.icon}</span>

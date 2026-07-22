@@ -2,7 +2,8 @@ import { createContext, useState, useContext} from "react"
 
 const AuthContext = createContext();
 
-export const AuthProvider = ({children}) => {
+export const AuthProvider = ({ children }) => {
+
     const [user, setUser] = useState(() => {
         const storedUser = localStorage.getItem("pos-user");
         return storedUser ? JSON.parse(storedUser) : null;
@@ -21,7 +22,7 @@ export const AuthProvider = ({children}) => {
     }
 
     return (
-        <AuthContext.Provider value={{ user, login, logout }}>
+        <AuthContext.Provider value={{user, login, logout }}>
             {children}
         </AuthContext.Provider>
     )

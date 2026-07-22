@@ -29,7 +29,10 @@ function App() {
 
           </Route>
 
-        <Route path="/customer/dashboard" element={<h1>Customer Dashboard</h1>} />
+        <Route path="/customer-dashboard" element={<Dashboard />} >
+          <Route index element={<>Products</>}></Route>
+         </Route>
+
         <Route path="/login" element={<Login />} />
         <Route path="/unauthorized" element={<h1>Unauthorized Access</h1>} />
       </Routes>
