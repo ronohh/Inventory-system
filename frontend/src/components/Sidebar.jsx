@@ -25,8 +25,8 @@ const Sidebar = () => {
     const {user} = useAuth();
     const[menuLinks, setMenuLinks] = useState(customerItems);
    useEffect(()=>{
-    if(user && user.role === "customer") {
-        setMenuLinks(customerItems)
+    if(user && user.role === "admin") {
+        setMenuLinks(menuItems)
     }
    }, [])
     return (

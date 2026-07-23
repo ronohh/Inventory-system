@@ -9,6 +9,7 @@ import Suppliers from './components/Supplier'
 import Product from './components/Product'
 import Users from './components/Users'
 import Logout from './components/Logout'
+import CustomerProducts from './components/CustomerProduct'
 
 function App() {
 
@@ -30,7 +31,7 @@ function App() {
           </Route>
 
         <Route path="/customer-dashboard" element={<Dashboard />} >
-          <Route index element={<>Products</>}></Route>
+          <Route index element={<CustomerProducts/>}></Route>
          </Route>
 
         <Route path="/login" element={<Login />} />
