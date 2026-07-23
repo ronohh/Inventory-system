@@ -1,7 +1,33 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 
 const CustomerProducts = () => {
+
+    const [products, setProducts] = useState([]);
+    const [categories, setcategories] = useState([])
+
+    const fetchProducts = async () => {
+        try{
+            const response = await axios.get(`http://localhost:3000/api/product`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("pos-token")}`,
+                    },
+                });
+            if(response.data.success){
+                setProducts(response.data.products);
+                setcategories(response.data.categories);
+            }else{
+                console.log("error fetching customer for products")
+            }
+        }catch(error){
+            console.error("error fetchproducts function")
+        }
+    }
+    useEffect(() => { 
+        fetchProducts();
+    },[]);
     return (
         <div>
             <div className="py-4 px-6">
@@ -32,14 +58,18 @@ const CustomerProducts = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
+                        {products.map((product,index) => (
+                            <tr key = "product._id" >
+                                <td>{index + 1}</td>
+                                <td>{product.name}</td>
+                                <td>{product.categoryId.categoryName}</td>
+                                <td>{product.price}</td>
+                                <td>{product.stock}</td>
+                                <td>
+                                    <button className="bg-green-500 bg-hover-green-600">Order</button>
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>
