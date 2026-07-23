@@ -5,7 +5,8 @@ import axios from "axios";
 const CustomerProducts = () => {
 
     const [products, setProducts] = useState([]);
-    const [categories, setcategories] = useState([])
+    const [categories, setcategories] = useState([]);
+    const [filteredProducts, setFilteredProducts] = useState([]);
 
     const fetchProducts = async () => {
         try{
@@ -18,6 +19,7 @@ const CustomerProducts = () => {
             if(response.data.success){
                 setProducts(response.data.products);
                 setcategories(response.data.categories);
+                setFilteredProducts(response.data.products)
             }else{
                 console.log("error fetching customer for products")
             }
@@ -28,6 +30,20 @@ const CustomerProducts = () => {
     useEffect(() => { 
         fetchProducts();
     },[]);
+
+    const handleSearch = (e) => {
+        setFilteredProducts(
+            products.filter((product)=>
+            product.name.toLowerCase().includes(e.target.value.toLowerCase())
+            )
+        )
+    }
+
+    const handleChangeCategory = (e) => {
+        setFilteredProducts(
+            products.filter((product) => product.categoryId._id === e.target.value)
+        )
+    }
     return (
         <div>
             <div className="py-4 px-6">
@@ -35,14 +51,15 @@ const CustomerProducts = () => {
             </div>
             <div className=" py-4 px-6 flex justify-between items-center w-full">
                 <div>
-                    <select name="" >
-                        <option value="">Select Category</option>
-                        <option value="">Rice</option>
-                        <option value="">Beverages</option>
+                    <select name="categories" id="" className="text-black bg-white border rounded p-1" onChange={handleChangeCategory} >
+                        <option  value="">Select Category</option>
+                        {categories.map((cat, index) => (
+                            <option key={cat._id} value={cat._id}>{cat.categoryName}</option>
+                        ))}
                     </select>
                 </div>
                 <div>
-                    <input type="text"  placeholder="search" className="p-1 border bg-white rounded"/>
+                    <input type="text"  placeholder="search" className="p-1 border bg-white rounded" onChange={handleSearch}/>
                 </div>
             </div>
             <div className=" py-4 px-6">
@@ -58,20 +75,21 @@ const CustomerProducts = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {products.map((product,index) => (
-                            <tr key = "product._id" >
-                                <td>{index + 1}</td>
-                                <td>{product.name}</td>
-                                <td>{product.categoryId.categoryName}</td>
-                                <td>{product.price}</td>
-                                <td>{product.stock}</td>
-                                <td>
-                                    <button className="bg-green-500 bg-hover-green-600">Order</button>
+                        {filteredProducts && filteredProducts.map((product,index) => (
+                            <tr key = {product._id} >
+                                <td className="border border-gray-300 p-2 ">{index + 1}</td>
+                                <td className="border border-gray-300 p-2">{product.name}</td>
+                                <td className="border border-gray-300 p-2">{product.categoryId.categoryName}</td>
+                                <td className="border border-gray-300 p-2">{product.price}</td>
+                                <td className="border border-gray-300 p-2">{product.stock}</td>
+                                <td className="border border-gray-300 p-2">
+                                    <button className="px-2 bg-green-400 hover:bg-green-600 rounded text-white">Order</button>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
+                {filteredProducts.length === 0 && <div>No products</div>}
             </div>
         </div>
     )
