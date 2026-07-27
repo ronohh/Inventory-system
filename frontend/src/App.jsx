@@ -10,6 +10,7 @@ import Product from './components/Product'
 import Users from './components/Users'
 import Logout from './components/Logout'
 import CustomerProducts from './components/CustomerProduct'
+import Orders from './components/Orders'
 
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
 
         <Route path="/customer-dashboard" element={<Dashboard />} >
           <Route index element={<CustomerProducts/>}></Route>
+          <Route path="orders" element={<Orders />}></Route>
          </Route>
 
         <Route path="/login" element={<Login />} />
