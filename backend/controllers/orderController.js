@@ -1,5 +1,6 @@
 import Product from '../models/Products.js';
 import OrderModel from '../models/Order.js';
+import Order from '../models/Order.js';
 
 const addOrder = async (req, res) => {
     try {
@@ -35,7 +36,10 @@ const addOrder = async (req, res) => {
 const getOrders = async (req, res) => {
     try{
         const userId = req.user._id;
-        const orders = await Order.find({ customer: userId}).populate({path: 'product', populate: {path: 'category', select: 'categoryName'}, select: 'name price'}).populate('user', 'name email');
+        const orders = await Order.find({ customer: userId}).populate({path: 'product', populate: {
+            path: 'categoryId',
+            select: 'categoryName'
+        }, select: 'name price'}).populate('customer', 'name email');
         return res.status(200).json({success: true, orders});
     } catch(error) {
         console.log(error);
