@@ -11,6 +11,7 @@ import Users from './components/Users'
 import Logout from './components/Logout'
 import CustomerProducts from './components/CustomerProduct'
 import Orders from './components/Orders'
+import Profile from './components/Profile'
 
 function App() {
 
@@ -34,6 +35,8 @@ function App() {
         <Route path="/customer-dashboard" element={<Dashboard />} >
           <Route index element={<CustomerProducts/>}></Route>
           <Route path="orders" element={<Orders />}></Route>
+          <Route path="profile" element={<Profile />}></Route>
+          <Route path="logout" ></Route>
          </Route>
 
         <Route path="/login" element={<Login />} />
