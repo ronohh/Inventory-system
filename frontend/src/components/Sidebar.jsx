@@ -19,7 +19,7 @@ const Sidebar = () => {
         {name: "products", path : "/customer-dashboard", icon: <FaBox/>, isParent:false,},
         {name: "Orders", path: "/customer-dashboard/orders", icon: <FaShoppingCart/>, isParent: false,},
         {name: "Profile", path: "/customer-dashboard/profile", icon: <FaCog/>, isParent: false, },
-        {name: "LogOut", path: "/admin-dashboard/logout", icon: <FaSignOutAlt />, isParent: false },
+        {name: "LogOut", path: "/customer-dashboard/logout", icon: <FaSignOutAlt />, isParent: false },
     ];
 
     const {user} = useAuth();

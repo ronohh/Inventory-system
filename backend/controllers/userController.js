@@ -72,15 +72,17 @@ const updateUserProfile = async (req, res) => {
         const userId = req.user._id;
         const {name, email, location, password } = req.body;
 
-        const user = await User.findById(userId);
-        if (!user) {
-            return res.status(404).json({ success: false, message: "user not found"});
-        } 
-        user.name = name || user.name;
-        user.email = email || user.email;
-        user.location = location || user.$assertPopulatedlocation
+        const updatedata = { name, email, location};
 
-        await user.save();
+        if(password && password.trim() !== '') {
+            const hashedPassword = await bcrypt.hash(password, 10);
+            updatedata.password = hashedPassword;
+        }
+        
+        const user = await User.findByIdAndUpdate(userId, updatedata, {new: true}).select('-password')
+        if(!user) {
+            return res.status(404).json({success: false, message: 'user not found'})
+        }
         return res.status(200).json({ success: true, message: "profile updated successfully", user});
     }catch (error) {
         console.error('error updating profile:', error);

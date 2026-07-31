@@ -36,7 +36,7 @@ function App() {
           <Route index element={<CustomerProducts/>}></Route>
           <Route path="orders" element={<Orders />}></Route>
           <Route path="profile" element={<Profile />}></Route>
-          <Route path="logout" ></Route>
+          <Route path="logout" element = {<Logout/>}></Route>
          </Route>
 
         <Route path="/login" element={<Login />} />
