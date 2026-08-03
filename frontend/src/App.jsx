@@ -12,6 +12,7 @@ import Logout from './components/Logout'
 import CustomerProducts from './components/CustomerProduct'
 import Orders from './components/Orders'
 import Profile from './components/Profile'
+import SummaryDashboard from './components/SummaryDashboard'
 
 function App() {
 
@@ -23,7 +24,7 @@ function App() {
               <Dashboard />
           </ProtectedRoutes>} >
 
-            <Route index element={<h1>Summary Dashboard</h1>}/>
+            <Route index element={<SummaryDashboard/>}/>
             <Route path= "categories" element={<Categories/>}/>
             <Route path="suppliers" element={<Suppliers/>} />
             <Route path="products" element={<Product/>}></Route>
