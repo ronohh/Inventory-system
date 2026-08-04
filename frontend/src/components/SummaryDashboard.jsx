@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import axios from 'axios';
 
 const SummaryDashboard = () => {
     const [dashboardData, setDashboardData] = useState({
@@ -10,6 +11,25 @@ const SummaryDashboard = () => {
         highestSaleProducts: null,
         lowStockProducts: []
     })
+
+    const fetchDashboardData = async () => {
+        try {
+            const response = await axios.get("http://localhost:3000/api/dashboard/", {
+                headers : {
+                        Authorization : `Bearer ${localStorage.getItem("pos-token")}`,
+                    }
+            });
+            console.log(localStorage.getItem("pos-token"));
+            setDashboardData(response.data);
+        } catch (error) {
+            console.error("Error fetching dashboard data:", error);
+        }
+    }
+
+    useEffect(() => {
+        fetchDashboardData();
+    }, []);
+
     return (
         <div className="p-5">
             <h2 className='text-3xl font-bold'>Dashboard</h2>

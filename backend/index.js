@@ -7,6 +7,7 @@ import supplierRoutes from './routes/supplier.js'
 import productRoutes from './routes/product.js'
 import userRoutes from './routes/users.js'
 import OrderRoutes from './routes/order.js'
+import dashboardRoutes from './routes/dashboard.js'
 
 const app = express();
 app.use(cors());
@@ -17,6 +18,7 @@ app.use('/api/supplier', supplierRoutes);
 app.use('/api/product', productRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/orders', OrderRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 app.listen(process.env.PORT, () => {
     connectDB();

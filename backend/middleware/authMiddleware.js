@@ -2,8 +2,21 @@ import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
 const authMiddleware = async (req, res, next) => {
+    console.log("URL:", req.originalUrl);
+console.log("Headers:", req.headers);
+console.log("Authorization:", req.headers.authorization);
     try{
-        const token = req.headers.authorization.split(" ")[1];
+        const authHeader = req.headers.authorization;
+
+        // Check if the Authorization header exists
+        if (!authHeader) {
+            return res.status(401).json({
+                success: false,
+                message: "Authorization header missing",
+            });
+        }
+
+        const token = authHeader.split(" ")[1];
         if(!token){
             return res.status(401).json({ success: false, message: "No token provided"});
         }
