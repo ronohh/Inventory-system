@@ -2,7 +2,6 @@ import Product from '../models/Products.js';
 import OrderModel from '../models/Order.js';
 
 const getData = async (req, res) => {
-    try {
         const totalProducts = await Product.countDocuments();
         
         const stockResult = await Product.aggregate([
@@ -23,10 +22,20 @@ const getData = async (req, res) => {
         ]);
         const revenue = revenueResult[0]?.totalRevenue || 0;
 
+        const outOfStockProducts = await Product.find({ stock: 0 }).select('name stock').populate('categoryId', 'categoryName');
 
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+        const recentOrders = await OrderModel.find().populate('customer', 'name').populate('product', 'name').sort({ orderDate: -1 }).limit(5);
+
+        res.json({
+            totalProducts,
+            totalStock,
+            ordersToday,
+            revenue,
+            highestSaleProducts: [],
+            lowStockProducts: [],
+            outOfStockProducts,
+            recentOrders
+        });
 };
 
 export { getData };

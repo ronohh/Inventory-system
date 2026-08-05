@@ -4,6 +4,6 @@ import { getData } from '../controllers/dashboardController.js';
 
 const router = express.Router();
 
-router.get('/', authMiddleware, getData);
+router.get('/', getData);
 
 export default router;
