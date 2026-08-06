@@ -84,7 +84,7 @@ const SummaryDashboard = () => {
                 </div>
 
                 <div className="bg-white p-4 rounded-lg shadow-md">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-3">Low Stock products</h3>
+                    <h2 className="text-lg font-semibold text-gray-800 mb-3">Low Stock products</h2>
                     {dashboardData.lowStockProducts.length > 0 ? (
                         <ul className="space-y-2">
                             {dashboardData.lowStockProducts.map((product, index) => (
@@ -99,77 +99,44 @@ const SummaryDashboard = () => {
                     )}
                 </div>
             </div>
-            <div className='w-full flex justify-center mt-6'>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:col-span-2 gap-4 mt-4'>
                 <div className= "bg-white rounded-lg shadow p-5 lg:col-span-2">
                     <h2 className="text-xl font-bold text-gray-800">Recent Orders</h2>
                     <table className="w-full">
 
-<thead>
+                    <thead>
 
-<tr className="bg-gray-100">
+                            <tr className="bg-gray-100">
+                                <th className="p-2 text-left">Customer</th>
+                                <th className="p-2 text-left">Product</th>
+                                <th className="p-2 text-left">Qty</th>
+                                <th className="p-2 text-left">Total</th>
+                                <th className="p-2 text-left">Date</th>
 
-<th className="p-2 text-left">Customer</th>
+                            </tr>
+                        </thead>
+                    <tbody>
 
-<th className="p-2 text-left">Product</th>
+                            {dashboardData.recentOrders.map(order=>(
 
-<th className="p-2 text-left">Qty</th>
+                            <tr key={order._id} className="border-b hover:bg-gray-50">
 
-<th className="p-2 text-left">Total</th>
+                                <td className="p-2">{order.customer?.name}</td>
+                                <td className="p-2">{order.product?.name}</td><td className="p-2">{order.Quantity}</td><td className="p-2">KES {order.totalPrice}</td>
+                                <td className="p-2">{new Date(order.orderDate).toLocaleDateString()}</td>
 
-<th className="p-2 text-left">Date</th>
+                            </tr>
 
-</tr>
+                            ))
+                            }
 
-</thead>
+                        </tbody>
 
-<tbody>
+                    </table>
+                </div>
 
-{
-dashboardData.recentOrders.map(order=>(
-
-<tr
-key={order._id}
-className="border-b hover:bg-gray-50"
->
-
-<td className="p-2">
-
-{order.customer?.name}
-
-</td>
-
-<td className="p-2">
-
-{order.product?.name}
-
-</td>
-
-<td className="p-2">
-
-{order.Quantity}
-
-</td>
-
-<td className="p-2">
-
-KES {order.totalPrice}
-
-</td>
-
-<td className="p-2">
-
-{new Date(order.orderDate).toLocaleDateString()}
-
-</td>
-
-</tr>
-
-))
-}
-
-</tbody>
-
-</table>
+                <div className='bg-white rounded-lg shadow p-5 lg:col-span-2'>
+                    
                 </div>
             </div>
         </div>
