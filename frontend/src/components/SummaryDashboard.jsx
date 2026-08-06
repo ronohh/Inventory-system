@@ -74,28 +74,52 @@ const SummaryDashboard = () => {
 
                 <div className="bg-white p-4 rounded-lg shadow-md">
                     <h3 className="text-lg font-semibold text-gray-800 mb-3">Top Selling Products</h3>
-                    {dashboardData.highestSaleProducts?.name ? (
-                        <div className= "text-gray-600">
-                            <p><strong>Name:</strong> {dashboardData.highestSaleProducts.name}</p>
-                            <p><strong>Category:</strong> {dashboardData.highestSaleProducts.categoryId?.categoryName}</p>
-                            <p><strong>Total Units Sold:</strong> {dashboardData.highestSaleProducts.totalQuantity}</p>
-                        </div>
+                    { dashboardData.highestSaleProducts && dashboardData.highestSaleProducts.length > 0 ? (
+                        <table border border-gray-200>
+                            <thead className="bg-gray-100">
+                                <tr>
+                                    <th className="p-2 text-left">Product</th>
+                                    <th className="p-2 text-left">Category</th>
+                                    <th className="p-2 text-left">Total Units Sold</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {dashboardData.highestSaleProducts.map((product, index) => (
+                                    <tr key={product._id} className="border-b hover:bg-gray-50">
+                                        <td className="p-2">{product.name}</td>
+                                        <td className="p-2">{product.categoryId?.categoryName}</td>
+                                        <td className="p-2">{product.totalQuantity}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     ) : (
                         <p className="text-gray-500">{dashboardData.highestSaleProducts?.message || "No sales data available."}</p>
-                    ) }
+                    ) } 
                 </div>
 
                 <div className="bg-white p-4 rounded-lg shadow-md">
                     <h2 className="text-lg font-semibold text-gray-800 mb-3">Low Stock products</h2>
                     {dashboardData.lowStockProducts.length > 0 ? (
-                        <ul className="space-y-2">
-                            {dashboardData.lowStockProducts.map((product, index) => (
-                                <li key={index} className="text-gray-600">
-                                    <strong>{product.name}</strong> - {product.stock} left{""}
-                                    <span className="text-red-400">{product.categoryId?.categoryName}</span>
-                                </li>
-                            ))}
-                        </ul>
+                        <table className="w-full border border-gray-200 border-collapse">
+                            <thead className="bg-gray-100">
+                                <tr>
+                                    <th className="p-2 text-left">Product</th>
+                                    <th className="p-2 text-left">Category</th>
+                                    <th className="p-2 text-left">Stock</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {dashboardData.lowStockProducts.map((product, index) => (
+                                    <tr key={product._id}>
+                                        <td className="p-2">{product.name}</td>
+                                        <td className="p-2">{product.categoryId?.categoryName}</td>
+                                        <td className={`border p-2 text-center font-semibold ${product.stock <= 2 ? "text-red-600" : "text-yellow-600" }`}>{product.stock}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                        
                     ): (
                         <p className="text-gray-500">No products are low on stock.</p>
                     )}

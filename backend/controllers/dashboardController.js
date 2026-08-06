@@ -28,17 +28,18 @@ const getData = async (req, res) => {
 
         const recentOrders = await OrderModel.find().populate('customer', 'name').populate('product', 'name').sort({ orderDate: -1 }).limit(5);
         
-        const highesttSaleProducts = await OrderModel.aggregate([
-            {
-                $group: { _id: "$product", totalQuantity: {$sum: "$Quantity"}}
-            },
-            { $sort: {totalQuantity: -1}}, {$limit: 1}
+        const highestSaleProducts = await OrderModel.aggregate([
+            { $group: { _id: "$product", totalQuantity: {$sum: "$Quantity"}} },
+            { $sort: {totalQuantity: -1}},
+            { $limit: 5},
+
+            { $lookup: {from: "products", localField: "_id", foreignField: "_id", as: "product"}},
+            { $unwind: "$product" },
+            { $lookup: {from: "categories", localField: "product.categoryId", foreignField: "_id", as: "category"} },
+            { $unwind: { path: "$category", preserveNullAndEmptyArrays: true } },
+
+            { $project: { _id: "$product._id", name: "$product.name", totalQuantity: 1, categoryId: {categoryName: "$category.categoryName"} } }
         ]);
-        let highestSaleProducts = null;
-        if (highesttSaleProducts.length > 0) {
-            const product = await Product.findById(highesttSaleProducts[0]._id).populate('categoryId', 'categoryName');
-            highestSaleProducts = { name: product.name, category: product.categoryId.categoryName, totalQuantity: highesttSaleProducts[0].totalQuantity };
-        }
 
         res.json({
             totalProducts,
