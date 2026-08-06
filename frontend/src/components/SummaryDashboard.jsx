@@ -55,27 +55,29 @@ const SummaryDashboard = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="bg-white p-4 rounded-lg shadow-md">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-3">Out of Stock products</h3>
+                    <h2 className="text-lg font-semibold text-gray-800 mb-3">Out of Stock products</h2>
+                    
                     {dashboardData.outOfStockProducts.length > 0 ? (
-                        <ul className="space-y-2">
-                            {dashboardData.outOfStockProducts.map((product, index) => (
-                                <li key={index} className="text-gray-600">
-                                    {product.name}{" "}
-                                    <span className="text-red-400 font-bold"> ({product.category.name})</span>
-                                </li>
-                            ))}
-                        </ul>
+                            <ul className="space-y-2">
+                                {dashboardData.outOfStockProducts.map((product, index) => (
+                                    <li key={index} className="text-gray-600">
+                                        {product.name}{" "}
+                                        <span className="text-red-400 font-bold"> ({product.categoryId.categoryName})</span>
+                                    </li>
+                                ))}
+                            </ul>
                     ) : (
                         <p className="text-gray-500">No products are out of stock.</p>
                     )}
+                    
                 </div>
 
                 <div className="bg-white p-4 rounded-lg shadow-md">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-3">Highest Sale Products</h3>
+                    <h3 className="text-lg font-semibold text-gray-800 mb-3">Top Selling Products</h3>
                     {dashboardData.highestSaleProducts?.name ? (
                         <div className= "text-gray-600">
                             <p><strong>Name:</strong> {dashboardData.highestSaleProducts.name}</p>
-                            <p><strong>Category:</strong> {dashboardData.highestSaleProducts.category}</p>
+                            <p><strong>Category:</strong> {dashboardData.highestSaleProducts.categoryId?.categoryName}</p>
                             <p><strong>Total Units Sold:</strong> {dashboardData.highestSaleProducts.totalQuantity}</p>
                         </div>
                     ) : (
@@ -90,7 +92,7 @@ const SummaryDashboard = () => {
                             {dashboardData.lowStockProducts.map((product, index) => (
                                 <li key={index} className="text-gray-600">
                                     <strong>{product.name}</strong> - {product.stock} left{""}
-                                    <span className="text-red-400">{product.category.name}</span>
+                                    <span className="text-red-400">{product.categoryId?.categoryName}</span>
                                 </li>
                             ))}
                         </ul>
@@ -99,8 +101,8 @@ const SummaryDashboard = () => {
                     )}
                 </div>
             </div>
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:col-span-2 gap-4 mt-4'>
-                <div className= "bg-white rounded-lg shadow p-5 lg:col-span-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:col-span-2 gap-4 mt-4">
+                <div className="bg-white rounded-lg shadow p-5 ">
                     <h2 className="text-xl font-bold text-gray-800">Recent Orders</h2>
                     <table className="w-full">
 
@@ -133,10 +135,6 @@ const SummaryDashboard = () => {
                         </tbody>
 
                     </table>
-                </div>
-
-                <div className='bg-white rounded-lg shadow p-5 lg:col-span-2'>
-                    
                 </div>
             </div>
         </div>

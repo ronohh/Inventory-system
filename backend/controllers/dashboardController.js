@@ -14,7 +14,7 @@ const getData = async (req, res) => {
         const endOfDay = new Date();
         endOfDay.setHours(23, 59, 59, 999);
         const ordersToday = await OrderModel.countDocuments({
-            OrderDate: { $gte: startOfDay, $lte: endOfDay }
+            orderDate: { $gte: startOfDay, $lte: endOfDay }
         });
 
         const revenueResult = await OrderModel.aggregate([
@@ -24,17 +24,29 @@ const getData = async (req, res) => {
 
         const outOfStockProducts = await Product.find({ stock: 0 }).select('name stock').populate('categoryId', 'categoryName');
 
-        const lowStockProducts = await Product.find({ stock: { $gt: 0, $lte: 5 } }).select('name stock').populate('categoryId', 'categoryName');
+        const lowStockProducts = await Product.find({ stock: { $lte: 5 } }).select('name stock').populate('categoryId', 'categoryName');
 
         const recentOrders = await OrderModel.find().populate('customer', 'name').populate('product', 'name').sort({ orderDate: -1 }).limit(5);
+        
+        const highesttSaleProducts = await OrderModel.aggregate([
+            {
+                $group: { _id: "$product", totalQuantity: {$sum: "$Quantity"}}
+            },
+            { $sort: {totalQuantity: -1}}, {$limit: 1}
+        ]);
+        let highestSaleProducts = null;
+        if (highesttSaleProducts.length > 0) {
+            const product = await Product.findById(highesttSaleProducts[0]._id).populate('categoryId', 'categoryName');
+            highestSaleProducts = { name: product.name, category: product.categoryId.categoryName, totalQuantity: highesttSaleProducts[0].totalQuantity };
+        }
 
         res.json({
             totalProducts,
             totalStock,
             ordersToday,
             revenue,
-            highestSaleProducts: [],
-            lowStockProducts: [],
+            highestSaleProducts,
+            lowStockProducts,
             outOfStockProducts,
             recentOrders
         });
