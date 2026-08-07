@@ -53,29 +53,14 @@ const SummaryDashboard = () => {
                 </div>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="bg-white p-4 rounded-lg shadow-md">
-                    <h2 className="text-lg font-semibold text-gray-800 mb-3">Out of Stock products</h2>
-                    
-                    {dashboardData.outOfStockProducts.length > 0 ? (
-                            <ul className="space-y-2">
-                                {dashboardData.outOfStockProducts.map((product, index) => (
-                                    <li key={index} className="text-gray-600">
-                                        {product.name}{" "}
-                                        <span className="text-red-400 font-bold"> ({product.categoryId.categoryName})</span>
-                                    </li>
-                                ))}
-                            </ul>
-                    ) : (
-                        <p className="text-gray-500">No products are out of stock.</p>
-                    )}
-                    
-                </div>
+            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
 
                 <div className="bg-white p-4 rounded-lg shadow-md">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-3">Top Selling Products</h3>
+                    <h3 className="text-lg font-bold text-gray-800 mb-3">Top Selling Products</h3>
+                    <div className="overflow-x-auto">
                     { dashboardData.highestSaleProducts && dashboardData.highestSaleProducts.length > 0 ? (
-                        <table border border-gray-200>
+                        
+                        <table className="w-full border border-gray-200 border-collapse">
                             <thead className="bg-gray-100">
                                 <tr>
                                     <th className="p-2 text-left">Product</th>
@@ -96,10 +81,12 @@ const SummaryDashboard = () => {
                     ) : (
                         <p className="text-gray-500">{dashboardData.highestSaleProducts?.message || "No sales data available."}</p>
                     ) } 
+                    </div>
                 </div>
 
                 <div className="bg-white p-4 rounded-lg shadow-md">
-                    <h2 className="text-lg font-semibold text-gray-800 mb-3">Low Stock products</h2>
+                    <h2 className="text-lg font-bold text-gray-800 mb-3">Low Stock products</h2>
+                    <div className="overflow-x-auto">
                     {dashboardData.lowStockProducts.length > 0 ? (
                         <table className="w-full border border-gray-200 border-collapse">
                             <thead className="bg-gray-100">
@@ -123,42 +110,45 @@ const SummaryDashboard = () => {
                     ): (
                         <p className="text-gray-500">No products are low on stock.</p>
                     )}
+                    </div>
                 </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:col-span-2 gap-4 mt-4">
+            <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:col-span-2 gap-4 my-6">
                 <div className="bg-white rounded-lg shadow p-5 ">
-                    <h2 className="text-xl font-bold text-gray-800">Recent Orders</h2>
-                    <table className="w-full">
+                    <h2 className="text-lg font-bold text-gray-800 mb-3">Recent Orders</h2>
+                    <div className="overflow-x-auto">
+                        <table className=" border border-gray-200 border-collapse">
 
-                    <thead>
+                        <thead>
 
-                            <tr className="bg-gray-100">
-                                <th className="p-2 text-left">Customer</th>
-                                <th className="p-2 text-left">Product</th>
-                                <th className="p-2 text-left">Qty</th>
-                                <th className="p-2 text-left">Total</th>
-                                <th className="p-2 text-left">Date</th>
+                                <tr className="bg-gray-100">
+                                    <th className="p-2 text-left">Customer</th>
+                                    <th className="p-2 text-left">Product</th>
+                                    <th className="p-2 text-left">Qty</th>
+                                    <th className="p-2 text-left">Total</th>
+                                    <th className="p-2 text-left">Date</th>
 
-                            </tr>
-                        </thead>
-                    <tbody>
+                                </tr>
+                            </thead>
+                        <tbody>
 
-                            {dashboardData.recentOrders.map(order=>(
+                                {dashboardData.recentOrders.map(order=>(
 
-                            <tr key={order._id} className="border-b hover:bg-gray-50">
+                                <tr key={order._id} className="border-b hover:bg-gray-50">
 
-                                <td className="p-2">{order.customer?.name}</td>
-                                <td className="p-2">{order.product?.name}</td><td className="p-2">{order.Quantity}</td><td className="p-2">KES {order.totalPrice}</td>
-                                <td className="p-2">{new Date(order.orderDate).toLocaleDateString()}</td>
+                                    <td className="p-2">{order.customer?.name}</td>
+                                    <td className="p-2">{order.product?.name}</td><td className="p-2">{order.Quantity}</td><td className="p-2">KES {order.totalPrice}</td>
+                                    <td className="p-2">{new Date(order.orderDate).toLocaleDateString()}</td>
 
-                            </tr>
+                                </tr>
 
-                            ))
-                            }
+                                ))
+                                }
 
-                        </tbody>
+                            </tbody>
 
-                    </table>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

@@ -30,8 +30,8 @@ const Orders = () => {
             <h1  className="text-2xl font-bold">My Orders</h1>
             <div>
                 <table className="w-full border-collapse border border-gray-300 mt-4">
-                    <thead>
-                        <tr className="bg-gray-200">
+                    <thead className="bg-gray-200">
+                        <tr>
                             <th className="border-gray-300 p-2">S NO</th>
                             <th className="border-gray-300 p-2">Product Name</th>
                             <th className="border-gray-300 p-2">Category</th>
@@ -43,12 +43,12 @@ const Orders = () => {
                     <tbody>
                         {orders.map((order, index) => (
                         <tr key={order._id}>
-                            <td>{index + 1}</td>
-                            <td>{order.product?.name}</td>
-                            <td>{order.product?.categoryId?.categoryName}</td>
-                            <td>{order.Quantity}</td>
-                            <td>{order.totalPrice}</td>
-                            <td>{new Date(order.orderDate).toLocaleDateString()}</td>
+                            <td className="border border-gray-300 p-2">{index + 1}</td>
+                            <td className="border border-gray-300 p-2">{order.product?.name}</td>
+                            <td className="border border-gray-300 p-2">{order.product?.categoryId?.categoryName}</td>
+                            <td className="border border-gray-300 p-2">{order.Quantity}</td>
+                            <td className="border border-gray-300 p-2">{order.totalPrice}</td>
+                            <td className="border border-gray-300 p-2">{new Date(order.orderDate).toLocaleDateString()}</td>
                         </tr>
                         ))}
                     </tbody>
